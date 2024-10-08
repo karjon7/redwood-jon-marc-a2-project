@@ -11,6 +11,7 @@ namespace Game10003
     public class Game
     {
         // Place your variables here:
+        int bananas = 0;
 
 
         /// <summary>
@@ -28,9 +29,24 @@ namespace Game10003
         {
             Window.ClearBackground(Color.OffWhite);
 
+            if (Input.IsMouseButtonPressed(MouseInput.Left) )
+            {
+                bananas++;
+
+            }
+
             Text.Color = Color.Black;
-            Text.Size = 100;
-            Text.Draw($"Hello World!", 0, 0);
+            Text.Size = 50;
+
+            if (bananas == 1)
+            {
+                Text.Draw($"You have {bananas} banana.", 0, 0);
+            }
+            else
+            {
+                Text.Draw($"You have {bananas} bananas.", 0, 0);
+
+            }
         }
     }
 }
