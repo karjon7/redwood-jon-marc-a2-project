@@ -1,4 +1,5 @@
 ﻿// Include code libraries you need below (use the namespace).
+using Raylib_cs;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -55,6 +56,35 @@ namespace Game10003
             UpdateSpawnTimer(); // Check if it's time to spawn a circle
 
             EvaluateCircles(); // Update and draw the circles
+
+            CheckCircleClick(); // Detect and handle player clicks
+        }
+
+
+        void CheckCircleClick()
+        {
+            // Check if the mouse button is pressed
+            if (Input.IsMouseButtonPressed(MouseInput.Left))
+            {
+                // Loop through active circles
+                for (int i = 0; i < maxCircles; i++)
+                {
+                    if (circlesActivity[i])
+                    {
+                        // Calculate the distance from the mouse click to the center of the circle
+                        Vector2 circle_pos = new Vector2(circlesX[i], circlesY[i]); // I know we arent supposed to use vectors but i dont want to do the math with floats
+                        float distance = Vector2.Distance(Input.GetMousePosition(), circle_pos);
+
+                        // If the distance is less than or equal to the circle's radius, it's a hit
+                        if (distance <= circlesRadius[i])
+                        {
+                            // Handle the click (e.g., remove the circle)
+                            RemoveCircle(i);
+                            break; // Exit after detecting the first clicked circle
+                        }
+                    }
+                }
+            }
         }
 
 
