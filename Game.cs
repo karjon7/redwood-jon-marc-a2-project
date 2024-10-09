@@ -14,7 +14,7 @@ namespace Game10003
         // Place your variables here:
        
         // Circle constants (unsure if we are allowed to use const yet)
-        const int maxCircles = 15; // Max amount of circles on screen
+        const int maxCircles = 10; // Max amount of circles on screen
         const float maxCirlceRadius = 30f; // The biggest the circles will get
         const float secsToGrow = 5f; // Time to grow to max radius
 
@@ -23,6 +23,13 @@ namespace Game10003
         int[] circlesY = new int[maxCircles]; // Array that holds the y position of all circles
         float[] circlesRadius = new float[maxCircles]; // Array that holds the radius of all circles
         bool[] circlesActivity = new bool[maxCircles]; // Array that holds the active state of all circles
+
+        // Spawning logic variables
+        const float minSpawnInterval = 0.1f; // Minimum time between checks
+        
+        float timeSinceLastCheck = 0f; // Time since the last spawn check
+        float spawnInterval = 1f;      // Start checking every 1 seconds
+        float spawnProbability = 0.05f; // Start with a 5% chance of spawning
 
 
         /// <summary>
@@ -45,10 +52,13 @@ namespace Game10003
         {
             Window.ClearBackground(Color.OffWhite);
 
-            EvaluateCircles(); 
+            UpdateSpawnTimer(); // Check if it's time to spawn a circle
+
+            EvaluateCircles(); // Update and draw the circles
         }
 
 
+        // Initializes the circles to default (inactive) state
         void InitCircles()
         {
             for (int i = 0; i < maxCircles; i++)
@@ -58,7 +68,7 @@ namespace Game10003
         }
 
 
-
+        // Adds a new circle
         void AddCircle(int x, int y)
         {
             for (int circle = 0; circle < maxCircles; circle++) { 
@@ -75,6 +85,7 @@ namespace Game10003
         }
 
 
+        // Removes a circle, resetting its properties
         void RemoveCircle(int index)
         {
             circlesX[index] = 0;
@@ -113,10 +124,62 @@ namespace Game10003
                     {
                         circlesRadius[circle] += growthIncrement;
                     }
-                    else // If it is at max size, send it to remove circle function to be removed from all arrays
+                    else
                     {
                         RemoveCircle(circle);
                     }
+                }
+            }
+        }
+
+
+        // Function to update the spawn timer and determine if a circle should spawn
+        void UpdateSpawnTimer()
+        {
+            timeSinceLastCheck += Time.DeltaTime; // Increment time since last check
+
+            if (timeSinceLastCheck >= spawnInterval)
+            {
+                TryToSpawnCircle(); // Attempt to spawn a circle
+                timeSinceLastCheck = 0f; // Reset timer after checking
+
+                // Adjust spawn interval and probability
+                AdjustSpawnIntervalAndProbability();
+            }
+        }
+
+
+        // Attempts to spawn a circle based on spawn probability
+        void TryToSpawnCircle()
+        {
+            // Generate a random float between 0 and 1, and compare with spawn probability
+            if (Random.Float() < spawnProbability)
+            {
+                AddCircle(Random.Integer(0 + (int)maxCirlceRadius, Window.Width - (int)maxCirlceRadius), Random.Integer(0 + (int)maxCirlceRadius, Window.Height - (int)maxCirlceRadius)); // Spawn circle at random position
+            }
+        }
+
+
+        // Adjust the spawn interval and probability over time
+        void AdjustSpawnIntervalAndProbability()
+        {
+            // Decrease spawn interval (but never below minSpawnInterval)
+            if (spawnInterval > minSpawnInterval)
+            {
+                spawnInterval -= 0.05f; // Decrease by 0.05 seconds each time
+                if (spawnInterval < minSpawnInterval)
+                {
+                    spawnInterval = minSpawnInterval;
+                }
+            }
+
+            // Increase spawn probability over time (up to a max of 1 or 100%)
+            if (spawnProbability < 1f)
+            {
+                spawnProbability += 0.005f; // Increase by 0.5% each check
+                if (spawnProbability > 1f)
+                {
+                    spawnProbability = 1f; // Cap the probability at 100%
                 }
             }
         }
