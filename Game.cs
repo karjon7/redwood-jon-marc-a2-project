@@ -32,7 +32,9 @@ namespace Game10003
         {
             Window.SetSize(800, 600);
             Window.TargetFPS = 60;
-            
+
+            InitCircles();
+
             AddCircle(400, 300);
         }
 
@@ -47,14 +49,11 @@ namespace Game10003
         }
 
 
-        void InitCircles(int x, int y)
+        void InitCircles()
         {
             for (int i = 0; i < maxCircles; i++)
             {
-                circlesX[i] = 0;
-                circlesY[i] = 0;
-                circlesRadius[i] = 0;
-                circlesActivity[i] = false;
+                RemoveCircle(i);
             }
         }
 
@@ -73,6 +72,15 @@ namespace Game10003
                     break;
                 }
             }
+        }
+
+
+        void RemoveCircle(int index)
+        {
+            circlesX[index] = 0;
+            circlesY[index] = 0;
+            circlesRadius[index] = 0;
+            circlesActivity[index] = false;
         }
 
 
@@ -101,10 +109,13 @@ namespace Game10003
                     // Draw the circle
                     Draw.Circle(circlesX[circle], circlesY[circle], circlesRadius[circle]);
 
-                    // Grow the circle if it's not at max size
-                    if (circlesRadius[circle] < maxCirlceRadius)
+                    if (circlesRadius[circle] < maxCirlceRadius) // Grow the circle if it's not at max size.
                     {
                         circlesRadius[circle] += growthIncrement;
+                    }
+                    else // If it is at max size, send it to remove circle function to be removed from all arrays
+                    {
+                        RemoveCircle(circle);
                     }
                 }
             }
