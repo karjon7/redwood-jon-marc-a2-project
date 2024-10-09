@@ -16,7 +16,7 @@ namespace Game10003
        
         // Circle constants (unsure if we are allowed to use const yet)
         const int maxCircles = 10; // Max amount of circles on screen
-        const float maxCirlceRadius = 30f; // The biggest the circles will get
+        const float maxCirlceRadius = 35f; // The biggest the circles will get
         const float secsToGrow = 5f; // Time to grow to max radius
 
         //Circle Properties
@@ -27,10 +27,13 @@ namespace Game10003
 
         // Spawning logic variables
         const float minSpawnInterval = 0.1f; // Minimum time between checks
-        
+        const float maxSpawnProbability = 0.9f; // Max probaility chance
+        const float spawnIntervalDecrease = 0.005f; // How much the interval decreases each time
+        const float spawnProbabilityIncrease = 0.01f; // How much the probability increases each time
+
         float timeSinceLastCheck = 0f; // Time since the last spawn check
         float spawnInterval = 1f;      // Start checking every 1 seconds
-        float spawnProbability = 0.05f; // Start with a 5% chance of spawning
+        float spawnProbability = 0.5f; // Start with a 50% chance of spawning
 
         // Player Score
         int playerScore = 0;
@@ -210,20 +213,20 @@ namespace Game10003
             // Decrease spawn interval (but never below minSpawnInterval)
             if (spawnInterval > minSpawnInterval)
             {
-                spawnInterval -= 0.05f; // Decrease by 0.05 seconds each time
+                spawnInterval -= spawnIntervalDecrease;
                 if (spawnInterval < minSpawnInterval)
                 {
                     spawnInterval = minSpawnInterval;
                 }
             }
 
-            // Increase spawn probability over time (up to a max of 1 or 100%)
-            if (spawnProbability < 1f)
+            // Increase spawn probability over time
+            if (spawnProbability < maxSpawnProbability)
             {
-                spawnProbability += 0.005f; // Increase by 0.5% each check
-                if (spawnProbability > 1f)
+                spawnProbability += spawnProbabilityIncrease; 
+                if (spawnProbability > maxSpawnProbability)
                 {
-                    spawnProbability = 1f; // Cap the probability at 100%
+                    spawnProbability = maxSpawnProbability; // Cap the probability at max probability
                 }
             }
         }
