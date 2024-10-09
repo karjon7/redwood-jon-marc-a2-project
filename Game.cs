@@ -14,14 +14,15 @@ namespace Game10003
         // Place your variables here:
        
         // Circle constants (unsure if we are allowed to use const yet)
-        const int maxCircles = 15;
-        const int maxCirlceRadius = 30;
+        const int maxCircles = 15; // Max amount of circles on screen
+        const float maxCirlceRadius = 30f; // The biggest the circles will get
+        const float secsToGrow = 5f; // Time to grow to max radius
 
         //Circle Properties
-        int[] circlesX = new int[maxCircles];
-        int[] circlesY = new int[maxCircles];
-        int[] circlesRadius = new int[maxCircles];
-        bool[] circlesActivity = new bool[maxCircles];
+        int[] circlesX = new int[maxCircles]; // Array that holds the x position of all circles
+        int[] circlesY = new int[maxCircles]; // Array that holds the y position of all circles
+        float[] circlesRadius = new float[maxCircles]; // Array that holds the radius of all circles
+        bool[] circlesActivity = new bool[maxCircles]; // Array that holds the active state of all circles
 
 
         /// <summary>
@@ -30,6 +31,8 @@ namespace Game10003
         public void Setup()
         {
             Window.SetSize(800, 600);
+            Window.TargetFPS = 60;
+            
             AddCircle(400, 300);
         }
 
@@ -40,7 +43,6 @@ namespace Game10003
         {
             Window.ClearBackground(Color.OffWhite);
 
-            Draw.FillColor = Color.Red;
             EvaluateCircles(); 
         }
 
@@ -76,17 +78,33 @@ namespace Game10003
 
         void EvaluateCircles()
         {
-            for (int circle = 0; circle < maxCircles; circle++) {
+            float growthIncrement = maxCirlceRadius / (secsToGrow * 60f); // Growth per frame
 
+            for (int circle = 0; circle < maxCircles; circle++)
+            {
                 if (circlesActivity[circle])
                 {
+                    // Calculate the ratio of the current radius to the max radius
+                    float ratio = circlesRadius[circle] / maxCirlceRadius;
+
+                    // Ensure the ratio stays between 0 and 1
+                    if (ratio > 1) ratio = 1;
+
+                    // Calculate the RGB values
+                    int red = 255; // Red stays constant
+                    int green = (int)(255 * (1 - ratio)); // Decrease green as radius increases
+                    int blue = (int)(255 * (1 - ratio)); // Decrease blue as radius increases
+
+                    // Set the fill color based on the calculated RGB values
+                    Draw.FillColor = new Color(red, green, blue);
+
+                    // Draw the circle
                     Draw.Circle(circlesX[circle], circlesY[circle], circlesRadius[circle]);
 
+                    // Grow the circle if it's not at max size
                     if (circlesRadius[circle] < maxCirlceRadius)
                     {
-
-                        circlesRadius[circle]++;
-
+                        circlesRadius[circle] += growthIncrement;
                     }
                 }
             }
