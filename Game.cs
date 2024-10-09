@@ -72,7 +72,14 @@ namespace Game10003
             Text.Color = Color.Black;
             Text.Size = 25;
 
-            Text.Draw($"You've scored {playerScore} points. \nTime: {Time.SecondsElapsed}", 0, 0);
+            if (playerScore == 1)
+            {
+                Text.Draw($"You've scored {playerScore} point. \nTime: {Time.SecondsElapsed}", 0, 0);
+            }
+            else
+            {
+                Text.Draw($"You've scored {playerScore} points. \nTime: {Time.SecondsElapsed}", 0, 0);
+            }
         }
 
 
