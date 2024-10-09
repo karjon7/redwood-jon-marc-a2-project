@@ -32,6 +32,9 @@ namespace Game10003
         float spawnInterval = 1f;      // Start checking every 1 seconds
         float spawnProbability = 0.05f; // Start with a 5% chance of spawning
 
+        // Player Score
+        int playerScore = 0;
+
 
         /// <summary>
         ///     Setup runs once before the game loop begins.
@@ -42,8 +45,6 @@ namespace Game10003
             Window.TargetFPS = 60;
 
             InitCircles();
-
-            AddCircle(400, 300);
         }
 
         /// <summary>
@@ -58,6 +59,17 @@ namespace Game10003
             EvaluateCircles(); // Update and draw the circles
 
             CheckCircleClick(); // Detect and handle player clicks
+
+            DrawText();
+        }
+
+
+        void DrawText()
+        {
+            Text.Color = Color.Black;
+            Text.Size = 25;
+
+            Text.Draw($"You've scored {playerScore} points. \nTime: {Time.SecondsElapsed}", 0, 0);
         }
 
 
@@ -80,6 +92,7 @@ namespace Game10003
                         {
                             // Handle the click (e.g., remove the circle)
                             RemoveCircle(i);
+                            playerScore++;
                             break; // Exit after detecting the first clicked circle
                         }
                     }
@@ -157,6 +170,7 @@ namespace Game10003
                     else
                     {
                         RemoveCircle(circle);
+                        playerScore--;
                     }
                 }
             }
