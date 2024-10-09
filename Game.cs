@@ -164,6 +164,7 @@ namespace Game10003
                     Draw.FillColor = new Color(red, green, blue);
 
                     // Draw the circle
+                    Draw.LineSize = 2;
                     Draw.Circle(circlesX[circle], circlesY[circle], circlesRadius[circle]);
 
                     if (circlesRadius[circle] < maxCirlceRadius) // Grow the circle if it's not at max size.
