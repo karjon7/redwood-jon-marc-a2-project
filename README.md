@@ -8,7 +8,7 @@ Process work can be found [here](process-work).
 ### Gameplay
 In this game, circles spawn at random positions on the screen. The player needs to click on them before they reach a maximum size. If a circle reaches its maximum size without being clicked, the player loses a point. Successfully clicking on a circle increases the player's score.
 
-## Features
+### Features
 **Random Circle Spawning**: Circles spawn at random intervals and random positions on the screen.
 **Dynamic Growth**: Circles gradually grow in size and change color based on their radius.
 **Score Tracking**: A score is displayed, which increases when a circle is clicked and decreases when a circle grows too large.
