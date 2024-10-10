@@ -3,7 +3,7 @@ This project is a simple interactive game where the player must click on randoml
 
 ### Process Work
 
-Process work can be found [here](process-work).
+Process work can be found [here](process-work.pdf).
 
 ### Gameplay
 In this game, circles spawn at random positions on the screen. The player needs to click on them before they reach a maximum size. If a circle reaches its maximum size without being clicked, the player loses a point. Successfully clicking on a circle increases the player's score.
